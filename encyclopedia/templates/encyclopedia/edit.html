@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia - Edit
+{% endblock %}
+
+{% block body %}
+    <h1>Edit entry: {{title}}</h1>
+
+    <form action={{title}} method="post" style="display:flex; flex-direction: column;">
+        {% csrf_token %}
+        {{form}}
+        <input type="hidden" name="editmode" value="True" />
+        <input style="width:100px;align-self:center;" type="submit" value="Submit">
+    </form>
+
+{% endblock %}
