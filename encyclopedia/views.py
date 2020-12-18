@@ -34,7 +34,7 @@ def search(request):
         print(resultslist)
         if resultslist:
             if len(resultslist)==1 and resultslist[0].lower() == query:
-                return HttpResponseRedirect("/encyclopedia/"+resultslist[0])
+                return HttpResponseRedirect("/"+resultslist[0])
             else:
                 return render(request, "encyclopedia/index.html",{
                     "searchform": searchform,
@@ -77,7 +77,7 @@ def create(request):
             title = form.cleaned_data["title"]
             description = form.cleaned_data["description"]
             util.save_entry(title, description)
-            return HttpResponseRedirect("/encyclopedia/"+title)
+            return HttpResponseRedirect("/"+title)
         else:
             return render(request, "encyclopedia/create.html", {
                 "searchform": searchform,
@@ -97,7 +97,12 @@ def edit(request,title):
         form.is_valid()
         description = form.cleaned_data["description"]
         util.save_entry(title, description)
-        return HttpResponseRedirect("/encyclopedia/"+title)
+        return render(request, "encyclopedia/title.html",{
+            "searchform": searchform,
+            "title":title,
+            "entry": markdown2.markdown(util.get_entry(title)),
+            "random": util.random_entry()
+        })
     util.get_content(title)
     form= NewEntryForm(initial={
             "searchform": searchform,
